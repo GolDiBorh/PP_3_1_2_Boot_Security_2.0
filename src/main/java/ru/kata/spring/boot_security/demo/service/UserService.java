@@ -13,8 +13,8 @@ import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import java.util.List;
 
 @Service
-@Transactional
-public class UserService implements UserDetailsService {
+
+public class UserService  {
 
     private final UserRepository userRepository;
     @Autowired
@@ -23,26 +23,17 @@ public class UserService implements UserDetailsService {
     }
     @Autowired
     private PasswordEncoder passwordEncoder;
-    public org.springframework.security.core.userdetails.User findByUsername(String username){
-        User user = findByUsername1(username);
+    @Transactional
+    public org.springframework.security.core.userdetails.User returnUserSpringByUsername(String username){
+        User user = findByUsername(username);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 passwordEncoder.encode(user.getPassword()),
                 user.getRoles());
     }
-    public  User findByUsername1(String username){
+    public  User findByUsername(String username){
         return userRepository.findByUsername(username);
-    }
-
-
-
-
-    @Override
-
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        return findByUsername(username);
     }
 
 
